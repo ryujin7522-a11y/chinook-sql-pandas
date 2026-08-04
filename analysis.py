@@ -86,3 +86,15 @@ plt.tight_layout()
 plt.show()
 
 # %%
+query_alltypes = """
+SELECT c.CustomerId AS Customer_Id, c.FirstName AS Customer_Name
+FROM Track AS t
+JOIN InvoiceLine AS i ON i.TrackId = t.TrackId
+JOIN Invoice AS ie ON ie.InvoiceId = i.InvoiceId
+JOIN Customer AS c ON c.CustomerId = ie.CustomerId
+GROUP BY c.CustomerId
+HAVING COUNT(DISTINCT t.MediaTypeId) = (SELECT COUNT(*) FROM MediaType)
+"""
+df_alltypes = pd.read_sql_query(query_alltypes, conn)
+df_alltypes
+# %%
