@@ -66,4 +66,23 @@ plt.legend()
 plt.title("Monthly Revenue with 3-Month Rolling Average")
 plt.tight_layout()
 plt.show()
+
+# %%
+query_country = """
+SELECT SUM(Total) AS Total_Sales, BillingCountry AS Country
+FROM Invoice
+GROUP BY BillingCountry
+ORDER BY Total_Sales DESC
+"""
+df_country = pd.read_sql_query(query_country, conn)
+df_country
+
+# %%
+df_country.head(10).plot(kind="barh", x="Country", y="Total_Sales", legend=False)
+plt.gca().invert_yaxis()
+plt.xlabel("Revenue ($)")
+plt.title("Top 10 Countries by Revenue")
+plt.tight_layout()
+plt.show()
+
 # %%
