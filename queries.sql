@@ -7,7 +7,10 @@ SELECT RANK() OVER (
 FROM Customer AS c
     JOIN Invoice AS i ON c.CustomerId = i.CustomerId
 GROUP BY c.CustomerId
-ORDER BY total_sales DESC --Which genres bring in the most revenue
+ORDER BY total_sales DESC
+LIMIT 10;
+
+--Which genres bring in the most revenue
 SELECT g.Name AS Genre_Name,
     ROUND(SUM(i.Quantity * i.UnitPrice), 2) AS Total_Sales
 FROM InvoiceLine AS i
@@ -15,17 +18,22 @@ FROM InvoiceLine AS i
     JOIN Genre AS g ON t.GenreId = g.GenreId
 GROUP BY g.Name
 ORDER BY Total_Sales DESC;
+
 --Monthly revenue trend
 SELECT SUM(Total) AS Total_Sales_Per_Month,
     strftime('%Y-%m', InvoiceDate) AS Month
 FROM Invoice
 GROUP BY strftime('%Y-%m', InvoiceDate)
-ORDER BY Month ASC --Which countries generate the most revenue 
+ORDER BY Month ASC;
+
+--Which countries generate the most revenue 
 SELECT SUM(Total) AS Total_Sales,
     BillingCountry AS Country
 FROM Invoice
 GROUP BY BillingCountry
-ORDER BY Total_Sales DESC --Which customers have purchased at least one track from every single media type?
+ORDER BY Total_Sales DESC;
+
+ --Which customers have purchased at least one track from every single media type?
 SELECT c.CustomerId AS Customer_Id,
     c.FirstName AS Customer_Name
 FROM Track AS t
@@ -36,4 +44,4 @@ GROUP BY c.CustomerId
 HAVING COUNT(Distinct t.MediaTypeId) = (
         SELECT COUNT(*)
         FROM MediaType
-    )
+    );
