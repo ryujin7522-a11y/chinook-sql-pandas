@@ -1,4 +1,4 @@
-# Chinook Warm-up Project
+# Chinook Project
 
 SQL → pandas pipeline practice using the Chinook sample database (digital music store).
 
